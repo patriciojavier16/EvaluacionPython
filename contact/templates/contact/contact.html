@@ -1,6 +1,6 @@
 {% extends 'core/base.html' %}
 {% load static %}
-{% block title %}About{% endblock %}
+{% block title %}Contact{% endblock %}
 {% block content %}
 <section class="page-section about-heading">
   <div class="container">
@@ -17,29 +17,47 @@
               <span class="section-heading-upper">Envíanos tus dudas</span>
               <span class="section-heading-lower">Contacto</span>
             </h2>
+            
+            {% if 'ok' in request.GET %}
+              <p><b>Su mensaje se ha enviado correctamente, en breve nos comunicaremos</b></p>
+            {% elif 'fail' in request.GET %}
+              <p><b>Ha ocurrido un error intente mas tarde</b></p>
+            {% endif %}
 
             <!-- Formulario de contacto -->
-            <form>
+            {% comment %} <form action="" method="POST">
+              {% csrf_token %}
+              <table>
+                {{contactForm.as_table}}
+              </table>
+              <input type="submit" value="Enviar"/>
+            </form>
+            {{request.POST}} {% endcomment %}
+            <form action="" method="POST">
+              {% csrf_token %}
               <div class="form-group">
                 <label>Nombre *</label>
                 <div class="input-group">
-                  <input type="text" class="form-control" />
+                  {{contactForm.name}}
                 </div>
+                {{contactForm.name.errors}}
               </div>
               <div class="form-group">
                 <label>Email *</label>
                 <div class="input-group">
-                  <input type="text" class="form-control" />
+                  {{contactForm.email}}
                 </div>
-                <ul class="errorlist">
+                {{contactForm.email.errors}}
+                {% comment %} <ul class="errorlist">
                   <li>El email no es correcto.</li>
-                </ul>
+                </ul> {% endcomment %}
               </div>
               <div class="form-group">
                 <label>Mensaje *</label>
                 <div class="input-group">
-                  <textarea class="form-control"></textarea>
+                  {{contactForm.message}}
                 </div>
+                {{contactForm.message.errors}}
               </div>
               <div class="text-center">
                 <input
